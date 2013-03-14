@@ -1,3 +1,17 @@
+/*
+NodeJS script that wathes for changes on the module and tests folder.
+
+First: install watchr (if you don't have it globally installed):
+# npm install wathcr 
+
+Second, execute the script from the root folder (outside utils/ dir)
+# node utils/watch.js
+
+Done!
+
+*/
+
+
 // Requires
 var watchr = require('watchr');
 var sys = require('sys');
