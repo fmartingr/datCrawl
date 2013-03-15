@@ -1,7 +1,7 @@
 import unittest
 from datCrawl import datCrawl, downloaders
 from datCrawl.exceptions import *
-from requirements import *
+from test.requirements import *
 
 
 class datCrawlDownloaderTests(unittest.TestCase):
