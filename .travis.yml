@@ -1,0 +1,14 @@
+language: python
+python:
+  - "2.5"
+  - "2.6"
+  - "2.7"
+  - "3.2"
+before_script:
+  - "echo ----------------------- PEP8"
+  - "echo --- datCrawl"
+  - "pep8 datCrawl/"
+  - "echo --- tests"
+  - "pep8 test/"
+  - "echo ------------------- PYFLAKES"
+  - pyflakes datCrawl
