@@ -1,8 +1,9 @@
 from datCrawl.exceptions import CrawlerDontHaveUrlsToWatch, \
-    CrawlerIsNotInstanceOfBaseCrawler, CrawlerForThisURLNotFound, \
-    NoCrawlerRegistered, CrawlerAlreadyRegistered
     CrawlerIsNotInstanceOfBase, CrawlerForThisURLNotFound, \
+    NoCrawlerRegistered, CrawlerAlreadyRegistered, DownloaderAlreadyRegistered, \
+    DownloaderIsNotInstanceOfBase
 from datCrawl.crawlers import Crawler
+from datCrawl.downloaders import Downloader
 import re
 
 
@@ -11,6 +12,7 @@ class datCrawl(object):
 
     def __init__(self):
         self.crawlers = {}
+        self.downloaders = {}
         self.urls = []
 
     def register_crawler(self, crawler):
@@ -37,6 +39,16 @@ class datCrawl(object):
         "Register all crawelers automagically."
         # TODO
         pass
+
+    def register_downloader(self, downloader):
+        downloader_name = downloader().__class__.__name__
+        if isinstance(downloader(), Downloader):
+            if downloader_name not in self.downloaders:
+                self.downloaders[downloader_name] = downloader
+            else:
+                raise DownloaderAlreadyRegistered("Downloader %s is already registered" % downloader_name)
+        else:
+            raise DownloaderIsNotInstanceOfBase('Downloader %s is not correctly created. (must be instance of base Downloader class)' % downloader_name)
 
     def run(self, url):
         if self.crawlers:

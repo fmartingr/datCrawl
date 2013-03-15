@@ -31,3 +31,8 @@ class CrawlerForThisURLNotFound(Exception):
 class CrawlerAlreadyRegistered(Exception):
     "When you try to register the same crawler."
     pass
+
+
+class DownloaderAlreadyRegistered(Exception):
+    "When you try to register the same downloader."
+    pass
