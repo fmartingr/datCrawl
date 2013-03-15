@@ -64,7 +64,7 @@ class datCrawlTests(unittest.TestCase):
 
     def test_register_incorrect_crawler(self):
         core = datCrawl()
-        self.assertRaises(CrawlerIsNotInstanceOfBaseCrawler, lambda: core.register_crawler(object))
+        self.assertRaises(CrawlerIsNotInstanceOfBase, lambda: core.register_crawler(object))
 
     def test_running_without_registered_crawlers(self):
         core = datCrawl()

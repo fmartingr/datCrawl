@@ -1,5 +1,10 @@
-class CrawlerIsNotInstanceOfBaseCrawler(Exception):
+class CrawlerIsNotInstanceOfBase(Exception):
     "Class is not instance of the base crawler."
+    pass
+
+
+class DownloaderIsNotInstanceOfBase(Exception):
+    "Class is not instance of the base downloader."
     pass
 
 
