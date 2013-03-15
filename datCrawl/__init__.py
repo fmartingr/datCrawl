@@ -37,6 +37,7 @@ class datCrawl(object):
                     action = registered_url[1]
                     crawler = registered_url[2]
                     return self.crawlers[crawler]().do(action, url)
+            raise CrawlerForThisURLNotFound("No crawler registered a URL pattern for: %s" % url)
         else:
             raise NoCrawlerRegistered("You must register a Crawler in order to do something.")
 

@@ -46,6 +46,12 @@ class datCrawlTests(unittest.TestCase):
         self.assertEqual(core.urls[1][1], AwesomeGoogleCrawler().urls[1][0])
         self.assertEqual(core.urls[1][2], AwesomeGoogleCrawler().__class__.__name__)
 
+    def test_no_crawler_registered_for_url(self):
+        core = datCrawl()
+        core.register_crawler(AwesomeGoogleCrawler)
+        self.assertEqual(core.crawlers['AwesomeGoogleCrawler'], AwesomeGoogleCrawler)
+        self.assertRaises(CrawlerForThisURLNotFound, lambda: core.run('http://www.github.com'))
+
     def test_register_crawler_without_urls(self):
         core = datCrawl()
         self.assertRaises(CrawlerDontHaveUrlsToWatch, lambda: core.register_crawler(AwesomeEmptyCrawler))

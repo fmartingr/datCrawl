@@ -16,3 +16,8 @@ class NoCrawlerRegistered(Exception):
 class CrawlerActionDoesNotExist(Exception):
     "A crawler action has not been made."
     pass
+
+
+class CrawlerForThisURLNotFound(Exception):
+    "When there's no crawler found for a specific URL"
+    pass
