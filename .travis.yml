@@ -1,18 +1,5 @@
 language: python
 python:
-  - "2.5"
-  - "2.6"
   - "2.7"
   - "3.2"
-install:
-  - pip install pep8 --use-mirrors
-  - pip install https://github.com/dcramer/pyflakes/tarball/master
-before_script:
-  - "echo ----------------------- PEP8"
-  - "echo --- datCrawl"
-  - "pep8 --ignore=E501,E225 datCrawl/"
-  - "echo --- tests"
-  - "pep8 --ignore=E501,E225 test/"
-  - "echo ------------------- PYFLAKES"
-  - pyflakes -x W datCrawl
 script: "python -m unittest discover"
