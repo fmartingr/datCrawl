@@ -1,6 +1,6 @@
 from datCrawl.exceptions import CrawlerDontHaveUrlsToWatch, \
     CrawlerIsNotInstanceOfBaseCrawler, CrawlerForThisURLNotFound, \
-    NoCrawlerRegistered
+    NoCrawlerRegistered, CrawlerAlreadyRegistered
 from datCrawl.crawlers import Crawler
 import re
 
@@ -15,15 +15,18 @@ class datCrawl(object):
     def register_crawler(self, crawler):
         "Registers a crawler on the core to use in certain urls."
         class_name = crawler().__class__.__name__
-        if isinstance(crawler(), Crawler):
-            urls = crawler().urls
-            if len(urls) > 0:
-                [self.register_url(url, action, class_name) for action, url in urls]
-                self.crawlers[class_name] = crawler
+        if class_name not in self.crawlers:
+            if isinstance(crawler(), Crawler):
+                urls = crawler().urls
+                if len(urls) > 0:
+                    [self.register_url(url, action, class_name) for action, url in urls]
+                    self.crawlers[class_name] = crawler
+                else:
+                    raise CrawlerDontHaveUrlsToWatch('Crawler %s dont have URLs to watch for.' % class_name)
             else:
-                raise CrawlerDontHaveUrlsToWatch('Crawler %s dont have URLs to watch for.' % class_name)
+                raise CrawlerIsNotInstanceOfBaseCrawler('Crawler %s is not correctly created. (must be instance of base Crawler class)' % class_name)
         else:
-            raise CrawlerIsNotInstanceOfBaseCrawler('Crawler %s is not correctly created. (must be instance of base Crawler class)' % class_name)
+            raise CrawlerAlreadyRegistered("Crawler %s is already registered." % class_name)
 
     def register_url(self, url, action, crawler):
         "Registers a certain URL to work with a crawler"

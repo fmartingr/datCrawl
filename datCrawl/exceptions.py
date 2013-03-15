@@ -21,3 +21,8 @@ class CrawlerActionDoesNotExist(Exception):
 class CrawlerForThisURLNotFound(Exception):
     "When there's no crawler found for a specific URL"
     pass
+
+
+class CrawlerAlreadyRegistered(Exception):
+    "When you try to register the same crawler."
+    pass

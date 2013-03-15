@@ -35,6 +35,11 @@ class datCrawlTests(unittest.TestCase):
         core.register_url(data[0], data[1], data[2])
         self.assertEquals(core.urls[0], data)
 
+    def test_cant_register_crawler_twice(self):
+        core = datCrawl()
+        core.register_crawler(AwesomeGoogleCrawler)
+        self.assertRaises(CrawlerAlreadyRegistered, lambda: core.register_crawler(AwesomeGoogleCrawler))
+
     def test_register_crawler_with_urls(self):
         core = datCrawl()
         core.register_crawler(AwesomeGoogleCrawler)
