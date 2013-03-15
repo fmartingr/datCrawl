@@ -3,16 +3,6 @@ class Crawler(object):
     urls = []  # List with regular expression of URLs that the crawler handle
 
 
-class CrawlerIsNotInstanceOfBaseCrawler(Exception):
-    "Class is not instance of the base crawler"
-    pass
-
-
-class CrawlerDontHaveUrlsToWatch(Exception):
-    "Crawler class have the -urls- parameter empty"
-    pass
-
-
 class datCrawl(object):
     def __init__(self):
         self.crawlers = {}
@@ -34,3 +24,13 @@ class datCrawl(object):
     def register_url(self, url, crawler):
         "Registers a certain URL to work with a crawler"
         self.urls.append((url, crawler))
+
+
+class CrawlerIsNotInstanceOfBaseCrawler(Exception):
+    "Class is not instance of the base crawler"
+    pass
+
+
+class CrawlerDontHaveUrlsToWatch(Exception):
+    "Crawler class have the -urls- parameter empty"
+    pass
