@@ -19,6 +19,7 @@ class AwesomeWikipediaTitleCrawler(Crawler):
     ]
 
     def action_title(self, url):
+        # LOOK, IM CRAWLING THE INTERNETS!
         return {'title': 'Python'}
 
 
