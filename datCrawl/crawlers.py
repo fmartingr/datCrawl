@@ -1,3 +1,6 @@
+from exceptions import CrawlerActionDoesNotExist
+
+
 class Crawler(object):
     "Base crawler class."
     urls = []  # List of tuples with regular expression of URLs that the crawler handle

@@ -1,5 +1,7 @@
-from datCrawl.exceptions import *
-from datCrawl.crawlers import *
+from datCrawl.exceptions import CrawlerDontHaveUrlsToWatch, \
+    CrawlerIsNotInstanceOfBaseCrawler, CrawlerForThisURLNotFound, \
+    NoCrawlerRegistered
+from datCrawl.crawlers import Crawler
 import re
 
 
