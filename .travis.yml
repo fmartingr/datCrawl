@@ -15,3 +15,4 @@ before_script:
   - "pep8 --ignore=E501,E225 test/"
   - "echo ------------------- PYFLAKES"
   - pyflakes -x W datCrawl
+script: "python -m unittest discover"
