@@ -13,5 +13,5 @@ class DefaultDownloader(Downloader):
             response = urllib2.urlopen(req)
             data = response.read()
             return data
-        except Exception, e:
-            raise Exception(e)
+        except Exception:
+            raise Exception("Error downloading %s" % url)
