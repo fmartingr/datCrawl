@@ -1,4 +1,4 @@
-from exceptions import CrawlerActionDoesNotExist
+from datCrawl.exceptions import CrawlerActionDoesNotExist
 
 
 class Crawler(object):
