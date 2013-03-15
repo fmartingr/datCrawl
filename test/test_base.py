@@ -1,6 +1,6 @@
 import unittest
 from datCrawl import *
-from requirements import *
+from test.requirements import *
 
 
 class datCrawlBaseTests(unittest.TestCase):
