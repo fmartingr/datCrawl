@@ -14,9 +14,10 @@ class AwesomeEmptyCrawler(Crawler):
 
 class AwesomeWikipediaTitleCrawler(Crawler):
     urls = [
-        ('title', 'http\:\/\/en.wikipedia.org\/wiki\/(.*)', )
+        ('get_title', 'http\:\/\/en.wikipedia.org\/wiki\/(.*)', )
     ]
+    downloader = 'Downloader'
 
-    def action_title(self, url):
+    def action_get_title(self, data):
         # LOOK, IM CRAWLING THE INTERNETS!
         return {'title': 'Python'}

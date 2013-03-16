@@ -1,6 +1,7 @@
 class Downloader(object):
     "Base downloader object"
-    pass
+    def get(self, url):
+        print("I'm a useless downloader :_")
 
 
 class DefaultDownloader(Downloader):
@@ -13,5 +14,5 @@ class DefaultDownloader(Downloader):
             response = urllib2.urlopen(req)
             data = response.read()
             return data
-        except Exception:
-            raise Exception("Error downloading %s" % url)
+        except Exception as error:
+            raise Exception("Error downloading %s: %s" % (url, error))

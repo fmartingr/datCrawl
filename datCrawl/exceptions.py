@@ -36,3 +36,8 @@ class CrawlerAlreadyRegistered(Exception):
 class DownloaderAlreadyRegistered(Exception):
     "When you try to register the same downloader."
     pass
+
+
+class DownloaderIsNotRegistered(Exception):
+    "When you try to register a Crawler before its downloader."
+    pass

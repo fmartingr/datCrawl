@@ -1,7 +1,7 @@
 from datCrawl.exceptions import CrawlerDontHaveUrlsToWatch, \
     CrawlerIsNotInstanceOfBase, CrawlerForThisURLNotFound, \
     NoCrawlerRegistered, CrawlerAlreadyRegistered, DownloaderAlreadyRegistered, \
-    DownloaderIsNotInstanceOfBase
+    DownloaderIsNotInstanceOfBase, DownloaderIsNotRegistered
 from datCrawl.crawlers import Crawler
 from datCrawl.downloaders import Downloader
 import re
@@ -14,6 +14,7 @@ class datCrawl(object):
         self.crawlers = {}
         self.downloaders = {}
         self.urls = []
+        self.register_downloader(Downloader)
 
     def register_crawler(self, crawler):
         "Registers a crawler on the core to use in certain urls."
@@ -22,8 +23,12 @@ class datCrawl(object):
             if isinstance(crawler(), Crawler):
                 urls = crawler().urls
                 if len(urls) > 0:
-                    [self.register_url(url, action, class_name) for action, url in urls]
-                    self.crawlers[class_name] = crawler
+                    downloader = crawler.downloader
+                    if not self.downloader_is_registered(downloader):
+                        raise DownloaderIsNotRegistered("Downloader %s is not registered. Register it before your crawler." % downloader)
+                    else:
+                        [self.register_url(url, action, class_name) for action, url in urls]
+                        self.crawlers[class_name] = crawler
                 else:
                     raise CrawlerDontHaveUrlsToWatch('Crawler %s dont have URLs to watch for.' % class_name)
             else:
@@ -43,12 +48,23 @@ class datCrawl(object):
     def register_downloader(self, downloader):
         downloader_name = downloader().__class__.__name__
         if isinstance(downloader(), Downloader):
-            if downloader_name not in self.downloaders:
+            if not self.downloader_is_registered(downloader_name):
                 self.downloaders[downloader_name] = downloader
             else:
                 raise DownloaderAlreadyRegistered("Downloader %s is already registered" % downloader_name)
         else:
             raise DownloaderIsNotInstanceOfBase('Downloader %s is not correctly created. (must be instance of base Downloader class)' % downloader_name)
+
+    def downloader_is_registered(self, downloader_name):
+        return downloader_name in self.downloaders
+
+    def download(self, url, downloader):
+        if self.downloader_is_registered(downloader):
+            getter = self.downloaders[downloader]()
+            data = getter.get(url)
+            return data
+        else:
+            raise DownloaderIsNotRegistered("Downloader %s is not registered. Register it before your crawler." % downloader)
 
     def run(self, url):
         if self.crawlers:
@@ -58,7 +74,9 @@ class datCrawl(object):
                 if regexp.match(url):
                     action = registered_url[1]
                     crawler = registered_url[2]
-                    return self.crawlers[crawler]().do(action, url)
+                    downloader = getattr(self.crawlers[crawler], 'downloader')
+                    data = self.download(url, downloader)
+                    return self.crawlers[crawler]().do(action, data)
             raise CrawlerForThisURLNotFound("No crawler registered a URL pattern for: %s" % url)
         else:
             raise NoCrawlerRegistered("You must register a Crawler in order to do something.")
