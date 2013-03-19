@@ -43,5 +43,17 @@ class datCrawlCrawlerTests(unittest.TestCase):
         core = datCrawl()
         self.assertRaises(TypeError, lambda: core.run())
 
+    def test_kwargs_beign_sent(self):
+        core = datCrawl()
+        core.register_crawler(AwesomeGoogleKwargsCrawler)
+        self.assertEqual(core.run('http://google.es'), 'es')
+        self.assertEqual(core.run('http://google.com'), 'com')
+        self.assertEqual(core.run('http://google.co.jp'), 'co.jp')
+
+    def test_crawler_url_need_regex_with_group(self):
+        core = datCrawl()
+        core.register_crawler(CrawlerWithRegexGroupError)
+        self.assertRaises(CrawlerUrlDontHaveGroupDefined, lambda: core.run('http://google.es'))
+
 if __name__ == '__main__':
     unittest.main()

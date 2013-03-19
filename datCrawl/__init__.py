@@ -1,7 +1,7 @@
 from datCrawl.exceptions import CrawlerDontHaveUrlsToWatch, \
     CrawlerIsNotInstanceOfBase, CrawlerForThisURLNotFound, \
     NoCrawlerRegistered, CrawlerAlreadyRegistered, DownloaderAlreadyRegistered, \
-    DownloaderIsNotInstanceOfBase, DownloaderIsNotRegistered
+    DownloaderIsNotInstanceOfBase, DownloaderIsNotRegistered, CrawlerUrlDontHaveGroupDefined
 from datCrawl.crawlers import Crawler
 from datCrawl.downloaders import Downloader
 import re
@@ -71,12 +71,17 @@ class datCrawl(object):
             for registered_url in self.urls:
                 pattern = registered_url[0]
                 regexp = re.compile(pattern)
-                if regexp.match(url):
-                    action = registered_url[1]
+                matches = regexp.match(url)
+                if matches:
                     crawler = registered_url[2]
+                    try:
+                        crawl_url = matches.group('url')
+                    except IndexError:
+                        raise CrawlerUrlDontHaveGroupDefined('The pattern [%s] of crawler [%s] dont have a url group defined.' % (pattern, crawler))
+                    action = registered_url[1]
                     downloader = getattr(self.crawlers[crawler], 'downloader')
-                    data = self.download(url, downloader)
-                    return self.crawlers[crawler]().do(action, data)
+                    data = self.download(crawl_url, downloader)
+                    return self.crawlers[crawler]().do(action, data, matches=matches)
             raise CrawlerForThisURLNotFound("No crawler registered a URL pattern for: %s" % url)
         else:
             raise NoCrawlerRegistered("You must register a Crawler in order to do something.")

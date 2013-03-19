@@ -3,8 +3,24 @@ from datCrawl.crawlers import Crawler
 
 class AwesomeGoogleCrawler(Crawler):
     urls = [
-        ('es', 'http\:\/\/(www\.)?google\.es', ),
-        ('de', 'http\:\/\/(www\.)?google\.de', )
+        ('es', '(?P<url>http\:\/\/google\.(?P<tld>es))', ),
+        ('de', '(?P<url>http\:\/\/google\.(?P<tld>de))', )
+    ]
+
+
+# For testing kwargs
+class AwesomeGoogleKwargsCrawler(Crawler):
+    urls = [
+        ('do_things', '(?P<url>http\:\/\/google\.(?P<tld>es|com|co\.jp))', ),
+    ]
+
+    def action_do_things(self, data, **kwargs):
+        return kwargs.get('matches').group('tld')
+
+
+class CrawlerWithRegexGroupError(Crawler):
+    urls = [
+        ('es', '(?P<this_should_be_url>http\:\/\/google\.es)', ),
     ]
 
 
@@ -14,10 +30,10 @@ class AwesomeEmptyCrawler(Crawler):
 
 class AwesomeWikipediaTitleCrawler(Crawler):
     urls = [
-        ('get_title', 'http\:\/\/en.wikipedia.org\/wiki\/(.*)', )
+        ('get_title', '(?P<url>http\:\/\/en.wikipedia.org\/wiki\/(?P<name>.*))', )
     ]
     downloader = 'Downloader'
 
-    def action_get_title(self, data):
+    def action_get_title(self, data, **kwargs):
         # LOOK, IM CRAWLING THE INTERNETS!
         return {'title': 'Python'}

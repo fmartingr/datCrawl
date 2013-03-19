@@ -41,3 +41,8 @@ class DownloaderAlreadyRegistered(Exception):
 class DownloaderIsNotRegistered(Exception):
     "When you try to register a Crawler before its downloader."
     pass
+
+
+class CrawlerUrlDontHaveGroupDefined(Exception):
+    "When a you try to use a URL whos regex dont have set the <url> group"
+    pass

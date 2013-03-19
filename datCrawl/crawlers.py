@@ -6,10 +6,10 @@ class Crawler(object):
     urls = []  # List of tuples with regular expression of URLs that the crawler handle
     downloader = 'Downloader'  # Name of the downloader class to use
 
-    def do(self, action, data):
+    def do(self, action, data, **kwargs):
         try:
             method = getattr(self, 'action_%s' % action)
-            result = method(data)
+            result = method(data, **kwargs)
             return result
-        except AttributeError:
-            raise CrawlerActionDoesNotExist('%s: action (%s) does not exist' % (self.__class__.__name__, action))
+        except AttributeError as error:
+            raise CrawlerActionDoesNotExist('%s: action (%s) does not exist: %s' % (self.__class__.__name__, action, error))
