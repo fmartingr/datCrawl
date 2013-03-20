@@ -38,59 +38,13 @@ pip install datCrawl
 ## To do
 
 - Better documentation
-- `Downloader` options
 - Maybe a standalone tool?
 - Logging mechanics (too many Exceptions IMO)
 
 ## A basic example
+See examples/simple.py
 
-``` python
-from datCrawl import *
-from datCrawl.downloaders import DefaultDownloader
-from lxml.cssselect import CSSSelector
-from lxml.etree import fromstring as document_fromstring
 
-# Here we define our custom downloader.
-# Looks like the DefaultDownloader but this have a
-# User-Agent header so Wikipedia don't forbbids us access :)
-class DefaultDownloaderWithCustomUserAgent(DefaultDownloader):
-    def get(self, url):
-        import urllib2
-        try:
-            headers = {'User-Agent': 'Firefox'}
-            req = urllib2.Request(url, "", headers)
-            response = urllib2.urlopen(req)
-            data = response.read()
-            return data
-        except Exception:
-            raise Exception("Error downloading %s" % url)
-
-# Here is our crawler, it just get the title from a certain article.
-class AwesomeWikipediaTitleCrawler(Crawler):
-    # The actions -> url pattern asociated with this crawler
-    urls = [
-        ('get_title', 'http\:\/\/en.wikipedia.org\/wiki\/(.*)', )
-    ]
-    # The downloader this crawlers needs
-    downloader = 'DefaultDownloaderWithCustomUserAgent'
-
-    # The action
-    def action_get_title(self, data):
-        try:
-            document = document_fromstring(data)
-            selector = CSSSelector('h1.firstHeading > span')
-            return {'title': selector(document)[0].text}
-        except Exception as e:
-            print e
-        #return {'title': 'Python'}
-
-# The magic
-crawler = datCrawl()  # The base class
-# Register the downloader
-crawler.register_downloader(DefaultDownloaderWithCustomUserAgent)
-# Register the crawler
-crawler.register_crawler(AwesomeWikipediaTitleCrawler)
-# Eat pie.
-print crawler.run("http://en.wikipedia.org/wiki/Python_(programming_language)")
-
+## License
+See LICENSE file.
 ```

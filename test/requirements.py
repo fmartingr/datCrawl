@@ -1,4 +1,5 @@
 from datCrawl.crawlers import Crawler
+from datCrawl.downloaders import Downloader
 
 
 class AwesomeGoogleCrawler(Crawler):
@@ -37,3 +38,17 @@ class AwesomeWikipediaTitleCrawler(Crawler):
     def action_get_title(self, data, **kwargs):
         # LOOK, IM CRAWLING THE INTERNETS!
         return {'title': 'Python'}
+
+
+class CrawlerWithOptions(AwesomeGoogleKwargsCrawler):
+    downloader_options = {'are_sent': True}
+    downloader = 'DownloaderThatReturnKwargs'
+
+    def action_do_things(self, data, **kwargs):
+        return data
+
+
+class DownloaderThatReturnKwargs(Downloader):
+    def get(self, url, **kwargs):
+        options = kwargs.get('options')
+        return options['are_sent']

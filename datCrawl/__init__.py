@@ -58,7 +58,7 @@ class datCrawl(object):
     def downloader_is_registered(self, downloader_name):
         return downloader_name in self.downloaders
 
-    def download(self, url, downloader, options):
+    def download(self, url, downloader, options=None):
         if self.downloader_is_registered(downloader):
             getter = self.downloaders[downloader]()
             data = getter.get(url, options=options)

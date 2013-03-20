@@ -19,5 +19,11 @@ class datCrawlDownloaderTests(unittest.TestCase):
         core.register_downloader(downloaders.DefaultDownloader)
         self.assertRaises(DownloaderAlreadyRegistered, lambda: core.register_downloader(downloaders.DefaultDownloader))
 
+    def test_downloader_receives_options(self):
+        core = datCrawl()
+        core.register_downloader(DownloaderThatReturnKwargs)
+        core.register_crawler(CrawlerWithOptions)
+        self.assertEqual(core.run('http://google.es'), True)
+
 if __name__ == '__main__':
     unittest.main()
