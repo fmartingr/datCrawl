@@ -1,7 +1,7 @@
 class Downloader(object):
     "Base downloader object"
     def get(self, url, **kwargs):
-        print("I'm a useless downloader :_")
+        return "I'm a useless downloader :_"
 
 
 class DefaultDownloader(Downloader):
