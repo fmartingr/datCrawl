@@ -5,6 +5,7 @@ class Crawler(object):
     "Base crawler class."
     urls = []  # List of tuples with regular expression of URLs that the crawler handle
     downloader = 'Downloader'  # Name of the downloader class to use
+    downloader_options = None
 
     def do(self, action, data, **kwargs):
         try:

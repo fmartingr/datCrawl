@@ -58,10 +58,10 @@ class datCrawl(object):
     def downloader_is_registered(self, downloader_name):
         return downloader_name in self.downloaders
 
-    def download(self, url, downloader):
+    def download(self, url, downloader, options):
         if self.downloader_is_registered(downloader):
             getter = self.downloaders[downloader]()
-            data = getter.get(url)
+            data = getter.get(url, options=options)
             return data
         else:
             raise DownloaderIsNotRegistered("Downloader %s is not registered. Register it before your crawler." % downloader)
@@ -80,7 +80,8 @@ class datCrawl(object):
                         raise CrawlerUrlDontHaveGroupDefined('The pattern [%s] of crawler [%s] dont have a url group defined.' % (pattern, crawler))
                     action = registered_url[1]
                     downloader = getattr(self.crawlers[crawler], 'downloader')
-                    data = self.download(crawl_url, downloader)
+                    downloader_options = getattr(self.crawlers[crawler], 'downloader_options')
+                    data = self.download(crawl_url, downloader, downloader_options)
                     return self.crawlers[crawler]().do(action, data, matches=matches)
             raise CrawlerForThisURLNotFound("No crawler registered a URL pattern for: %s" % url)
         else:
