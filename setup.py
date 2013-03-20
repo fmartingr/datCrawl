@@ -7,6 +7,6 @@ setup(
     author_email='fmartingr@me.com',
     packages=['datCrawl'],
     url='http://github.com/fmartingr/datCrawl/',
-    license='LICENSE',
+    license='GPLv2',
     description='Crawl as is you were using an API.',
 )
