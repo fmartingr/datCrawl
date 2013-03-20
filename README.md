@@ -42,9 +42,9 @@ pip install datCrawl
 - Logging mechanics (too many Exceptions IMO)
 
 ## A basic example
+
 See examples/simple.py
 
-
 ## License
+
 See LICENSE file.
-```
