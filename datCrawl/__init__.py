@@ -66,7 +66,7 @@ class datCrawl(object):
         else:
             raise DownloaderIsNotRegistered("Downloader %s is not registered. Register it before your crawler." % downloader)
 
-    def run(self, url):
+    def match(self, url):
         if self.crawlers:
             for registered_url in self.urls:
                 pattern = registered_url[0]
@@ -80,9 +80,45 @@ class datCrawl(object):
                         raise CrawlerUrlDontHaveGroupDefined('The pattern [%s] of crawler [%s] dont have a url group defined.' % (pattern, crawler))
                     action = registered_url[1]
                     downloader = getattr(self.crawlers[crawler], 'downloader')
-                    downloader_options = getattr(self.crawlers[crawler], 'downloader_options')
-                    data = self.download(crawl_url, downloader, downloader_options)
-                    return self.crawlers[crawler]().do(action, data, matches=matches)
+                    worker = datCrawlWorker(crawl_url, self.crawlers[crawler], action, self.downloaders[downloader], matches)
+                    return worker
             raise CrawlerForThisURLNotFound("No crawler registered a URL pattern for: %s" % url)
         else:
             raise NoCrawlerRegistered("You must register a Crawler in order to do something.")
+
+    def worker(self, url):
+        worker = self.match(url)
+        return worker
+
+    def run(self, url):
+        worker = self.match(url)
+        return worker.run()
+
+
+class datCrawlWorker(object):
+    def __init__(self, url, crawler, action, downloader, matches):
+        self.url = url
+        self.crawler = crawler
+        self.crawler_action = action
+        self.downloader = downloader
+        self.downloader_options = getattr(self.crawler, 'downloader_options')
+        self.matches = matches
+        self.data = None
+        self.crawled_data = None
+
+    def download(self):
+        if self.downloader:
+            getter = self.downloader()
+            data = getter.get(self.url, options=self.downloader_options)
+            self.data = data
+        else:
+            raise DownloaderIsNotRegistered("Downloader %s is not registered. Register it before your crawler." % self.downloader)
+
+    def crawl(self):
+        if self.data:
+            self.crawled_data = self.crawler().do(self.crawler_action, self.data, matches=self.matches)
+
+    def run(self):
+        self.download()
+        self.crawl()
+        return self.crawled_data

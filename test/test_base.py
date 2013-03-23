@@ -2,6 +2,8 @@ import unittest
 from datCrawl import *
 from test.requirements import *
 
+URL = 'http://en.wikipedia.org/wiki/Python'
+
 
 class datCrawlBaseTests(unittest.TestCase):
 
@@ -18,8 +20,15 @@ class datCrawlBaseTests(unittest.TestCase):
     def test_running_full_crawler(self):
         core = datCrawl()
         core.register_crawler(AwesomeWikipediaTitleCrawler)
-        result = core.run('http://en.wikipedia.org/wiki/Python')
+        result = core.run(URL)
         self.assertEqual(result['title'], 'Python')
+
+    def test_worker_instance(self):
+        core = datCrawl()
+        core.register_crawler(AwesomeWikipediaTitleCrawler)
+        worker = core.worker(URL)
+        self.assertTrue(isinstance(worker, datCrawlWorker))
+        self.assertEqual(URL, worker.url)
 
 if __name__ == '__main__':
     unittest.main()
