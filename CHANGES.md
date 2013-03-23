@@ -1,3 +1,8 @@
+## 0.3.0 (2013-03-23)
+Added `datCrawlerWorker` class:
+- This now does the download and crawling "phases"
+- new: `datCrawl.worker(url)` and `datCrawl.match(url)`, both returns a `datCrawlerWorker`
+
 ## 0.2.0 (2013-03-16)
 **Modified crawler behaviour**
 - Now every regular expression of a certain URL **needs** a group called `url`. That group will be the URL sent to the associated `Downloader`.
