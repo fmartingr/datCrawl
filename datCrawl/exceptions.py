@@ -1,15 +1,8 @@
+# Crawlers
+
+
 class CrawlerIsNotInstanceOfBase(Exception):
     "Class is not instance of the base crawler."
-    pass
-
-
-class DownloaderIsNotInstanceOfBase(Exception):
-    "Class is not instance of the base downloader."
-    pass
-
-
-class CrawlerDontHaveUrlsToWatch(Exception):
-    "Crawler class have the -urls- parameter empty."
     pass
 
 
@@ -18,8 +11,13 @@ class NoCrawlerRegistered(Exception):
     pass
 
 
-class CrawlerActionDoesNotExist(Exception):
-    "A crawler action has not been made."
+class CrawlerAlreadyRegistered(Exception):
+    "When you try to register the same crawler."
+    pass
+
+
+class CrawlerDontHaveUrlsToWatch(Exception):
+    "Crawler class have the -urls- parameter empty."
     pass
 
 
@@ -28,8 +26,21 @@ class CrawlerForThisURLNotFound(Exception):
     pass
 
 
-class CrawlerAlreadyRegistered(Exception):
-    "When you try to register the same crawler."
+class CrawlerActionDoesNotExist(Exception):
+    "A crawler action has not been made."
+    pass
+
+
+class CrawlerUrlDontHaveGroupDefined(Exception):
+    "When a you try to use a URL whos regex dont have set the <url> group"
+    pass
+
+
+# Downloaders
+
+
+class DownloaderIsNotInstanceOfBase(Exception):
+    "Class is not instance of the base downloader."
     pass
 
 
@@ -40,9 +51,4 @@ class DownloaderAlreadyRegistered(Exception):
 
 class DownloaderIsNotRegistered(Exception):
     "When you try to register a Crawler before its downloader."
-    pass
-
-
-class CrawlerUrlDontHaveGroupDefined(Exception):
-    "When a you try to use a URL whos regex dont have set the <url> group"
     pass
