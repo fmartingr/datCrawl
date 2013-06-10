@@ -29,7 +29,7 @@ The `Crawler` subclases are where the scrapping work is done. The schema is some
 
 ## Usage
 
-For now, refer to the example below or in the repo. Better documentation is on the works.
+[Go to the documentation](http://datcrawl.readthedocs.com)
 
 ```
 pip install datCrawl
